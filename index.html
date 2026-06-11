@@ -5,172 +5,396 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgroTech — Agro Forte, Futuro Sustentável</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ─────────────────────────────── */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --primary:   #00ff88;
+            --bg:        #0a192f;
+            --bg-card:   #0d2240;
+            --accent:    #00d4ff;
+            --text:      #e6f1ff;
+            --muted:     #8892b0;
+            --glass:     rgba(255,255,255,.05);
+            --glass-b:   rgba(255,255,255,.10);
+        }
+
+        html { scroll-behavior: smooth; background: var(--bg); }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* ── Header ───────────────────────────────────── */
+        header {
+            position: fixed; top:0; width:100%; z-index:100;
+            background: rgba(10,25,47,.87);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--glass-b);
+            padding: 16px 0;
+        }
+        header .wrap { display:flex; align-items:center; justify-content:space-between; }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem; font-weight:700;
+            letter-spacing: 3px; color: var(--text);
+            text-decoration: none;
+        }
+        .logo span { color: var(--primary); }
+
+        nav ul { list-style:none; display:flex; gap:26px; }
+        nav a {
+            color: var(--text); text-decoration:none;
+            font-size:.82rem; font-weight:600;
+            text-transform:uppercase; letter-spacing:1px;
+            transition: color .25s, text-shadow .25s;
+        }
+        nav a:hover { color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,.7); }
+
+        /* ── Hero ─────────────────────────────────────── */
+        #inicio {
+            position:relative; min-height:100vh;
+            display:flex; align-items:center; justify-content:center;
+            text-align:center; overflow:hidden;
+        }
+        .hero-bg {
+            position:absolute; inset:0;
+            background: url('https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?auto=format&fit=crop&w=1500&q=80') center/cover;
+            z-index:0;
+        }
+        .hero-overlay {
+            position:absolute; inset:0;
+            background: linear-gradient(to bottom, rgba(10,25,47,.72), #0a192f);
+            z-index:1;
+        }
+        .hero-content {
+            position:relative; z-index:2;
+            max-width:860px; padding:0 24px;
+            display:flex; flex-direction:column; align-items:center;
+            opacity:0; transform:translateY(32px);
+            animation: fadeUp .9s ease-out .2s forwards;
+        }
+        @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+        .badge {
+            display:inline-block; border:1px solid var(--primary);
+            color:var(--primary); background:rgba(0,255,136,.06);
+            padding:6px 22px; border-radius:999px;
+            font-size:.74rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:2.5px; margin-bottom:26px;
+        }
+        .hero-content h1 {
+            font-family:'Orbitron',sans-serif;
+            font-size: clamp(2.2rem,6vw,4.4rem);
+            font-weight:700; line-height:1.1; margin-bottom:22px;
+            background: linear-gradient(135deg,#fff 0%,var(--primary) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+        .hero-content p {
+            font-size:clamp(.95rem,2vw,1.18rem);
+            color:var(--muted); max-width:660px;
+            margin-bottom:40px; line-height:1.8;
+        }
+        .btns { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+
+        .btn {
+            display:inline-block; padding:15px 36px;
+            border-radius:6px; font-family:'Montserrat',sans-serif;
+            font-weight:700; font-size:.84rem;
+            text-decoration:none; text-transform:uppercase;
+            letter-spacing:1.2px; cursor:pointer;
+            transition: transform .25s, box-shadow .25s, background .25s, color .25s;
+            border:none;
+        }
+        .btn-green { background:var(--primary); color:var(--bg); }
+        .btn-green:hover { transform:scale(1.05); box-shadow:0 0 24px rgba(0,255,136,.45); }
+        .btn-line  { background:transparent; border:1.5px solid var(--text); color:var(--text); }
+        .btn-line:hover { background:var(--text); color:var(--bg); }
+
+        /* ── Section shared ───────────────────────────── */
+        .sec-title {
+            font-family:'Orbitron',sans-serif;
+            font-size:clamp(1.7rem,4vw,2.7rem);
+            font-weight:700; text-align:center; margin-bottom:60px;
+        }
+
+        /* ── Features ─────────────────────────────────── */
+        #tecnologia { padding:110px 0; background:var(--bg); }
+
+        .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:28px; }
+
+        .card {
+            background:var(--glass); border:1px solid var(--glass-b);
+            border-radius:18px; padding:44px 36px; text-align:center;
+            transition: transform .35s, border-color .35s, background .35s, box-shadow .35s;
+        }
+        .card:hover {
+            transform:translateY(-10px);
+            border-color:var(--primary);
+            background:rgba(0,255,136,.05);
+            box-shadow:0 0 32px rgba(0,255,136,.14);
+        }
+        .card-icon {
+            display:inline-flex; align-items:center; justify-content:center;
+            width:80px; height:80px; border-radius:50%;
+            background:rgba(0,255,136,.10); margin-bottom:24px;
+            transition:transform .3s;
+        }
+        .card:hover .card-icon { transform:scale(1.12); }
+        .card-icon svg {
+            width:40px; height:40px;
+            stroke:var(--primary); fill:none;
+            stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
+            transition:filter .3s;
+        }
+        .card:hover .card-icon svg { filter:drop-shadow(0 0 7px rgba(0,255,136,.75)); }
+        .card h3 {
+            font-family:'Orbitron',sans-serif; font-size:1rem;
+            font-weight:700; color:var(--primary); margin-bottom:14px;
+        }
+        .card p { color:var(--muted); line-height:1.7; font-size:.94rem; }
+
+        /* ── Sustainability ───────────────────────────── */
+        #sustentabilidade { padding:110px 0; background:rgba(255,255,255,.02); }
+        .about-grid {
+            display:grid; grid-template-columns:1fr 1fr;
+            align-items:center; gap:64px;
+        }
+        .about-text h2 {
+            font-family:'Orbitron',sans-serif;
+            font-size:clamp(1.7rem,3.5vw,2.5rem);
+            font-weight:700; margin-bottom:20px; line-height:1.2;
+        }
+        .about-text p { color:var(--muted); font-size:1.04rem; line-height:1.8; margin-bottom:32px; }
+        .checklist { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .checklist li {
+            display:flex; align-items:center; gap:12px;
+            font-weight:600; font-size:.94rem;
+        }
+        .checklist li svg {
+            flex-shrink:0; width:22px; height:22px;
+            stroke:var(--primary); fill:none;
+            stroke-width:2; stroke-linecap:round; stroke-linejoin:round;
+        }
+        .img-wrap { position:relative; }
+        .img-wrap::before {
+            content:''; position:absolute; inset:-20px;
+            background:rgba(0,255,136,.12); border-radius:50%;
+            filter:blur(48px); z-index:0;
+        }
+        .img-wrap img {
+            position:relative; z-index:1; width:100%;
+            border-radius:20px; box-shadow:0 24px 48px rgba(0,0,0,.55);
+            display:block;
+        }
+
+        /* ── Future ───────────────────────────────────── */
+        #futuro { padding:110px 0; background:var(--bg); text-align:center; }
+        .future-box {
+            max-width:760px; margin:0 auto;
+            background:var(--bg-card); border:1px solid var(--glass-b);
+            border-radius:28px; padding:72px 60px;
+            position:relative; overflow:hidden;
+            box-shadow:0 0 60px rgba(0,0,0,.4);
+        }
+        .future-box::before {
+            content:''; position:absolute; top:-60px; right:-60px;
+            width:260px; height:260px;
+            background:rgba(0,255,136,.08); border-radius:50%; filter:blur(48px);
+        }
+        .future-box h2 {
+            font-family:'Orbitron',sans-serif;
+            font-size:clamp(1.5rem,3vw,2.1rem);
+            font-weight:700; margin-bottom:20px; position:relative; z-index:1;
+        }
+        .future-box p {
+            color:var(--muted); font-size:1.04rem; line-height:1.75;
+            margin-bottom:40px; position:relative; z-index:1;
+        }
+        .future-box .btn { position:relative; z-index:1; }
+
+        /* ── Footer ───────────────────────────────────── */
+        footer {
+            border-top:1px solid var(--glass-b);
+            background:var(--bg); padding:36px 0; text-align:center;
+        }
+        footer p { color:var(--muted); font-size:.87rem; }
+
+        /* ── Scroll reveal ────────────────────────────── */
+        .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+        .reveal.left  { transform:translateX(-36px); }
+        .reveal.right { transform:translateX(36px); }
+        .reveal.scale { transform:scale(.93); }
+        .reveal.on    { opacity:1; transform:none; }
+        .card:nth-child(2) { transition-delay:.12s; }
+        .card:nth-child(3) { transition-delay:.24s; }
+
+        /* ── Responsive ───────────────────────────────── */
+        @media (max-width:900px) {
+            .about-grid { grid-template-columns:1fr; gap:40px; text-align:center; }
+            .checklist  { align-items:center; }
+            .img-wrap   { max-width:500px; margin:0 auto; }
+        }
+        @media (max-width:640px) {
+            header .wrap  { flex-direction:column; gap:14px; }
+            nav ul        { gap:16px; }
+            .future-box   { padding:48px 24px; }
+            .btns         { flex-direction:column; align-items:center; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="container">
-            <a href="#inicio" class="logo">AGRO<span>TECH</span></a>
-            <nav>
-                <ul>
-                    <li><a href="#inicio">Início</a></li>
-                    <li><a href="#tecnologia">Tecnologia</a></li>
-                    <li><a href="#sustentabilidade">Sustentabilidade</a></li>
-                    <li><a href="#futuro">O Futuro</a></li>
+<!-- HEADER -->
+<header>
+    <div class="wrap">
+        <a href="#inicio" class="logo">AGRO<span>TECH</span></a>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#tecnologia">Tecnologia</a></li>
+                <li><a href="#sustentabilidade">Sustentabilidade</a></li>
+                <li><a href="#futuro">O Futuro</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <span class="badge">Agro Forte, Futuro Sustentável</span>
+        <h1>A Nova Era do Campo</h1>
+        <p>Onde a inteligência artificial encontra a terra para criar um ciclo de abundância, alta produtividade e respeito à natureza.</p>
+        <div class="btns">
+            <a href="#tecnologia" class="btn btn-green">Explorar Tecnologias</a>
+            <a href="#sustentabilidade" class="btn btn-line">Nossa Missão</a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="tecnologia">
+    <div class="wrap">
+        <h2 class="sec-title reveal">Inovação Agro 4.0</h2>
+        <div class="cards">
+
+            <div class="card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                    </svg>
+                </div>
+                <h3>Monitoramento via Satélite</h3>
+                <p>Análise em tempo real da saúde do solo e das plantações, garantindo intervenções precisas e sem desperdícios.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect width="18" height="10" x="3" y="11" rx="2"/>
+                        <circle cx="12" cy="5" r="2"/>
+                        <path d="M12 7v4"/>
+                        <line x1="8" x2="8" y1="16" y2="16"/>
+                        <line x1="16" x2="16" y1="16" y2="16"/>
+                    </svg>
+                </div>
+                <h3>Automação Inteligente</h3>
+                <p>Maquinários autônomos e drones que otimizam o trabalho no campo e reduzem drasticamente as emissões de carbono.</p>
+            </div>
+
+            <div class="card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <line x1="18" x2="18" y1="20" y2="10"/>
+                        <line x1="12" x2="12" y1="20" y2="4"/>
+                        <line x1="6" x2="6" y1="20" y2="14"/>
+                    </svg>
+                </div>
+                <h3>Big Data Rural</h3>
+                <p>Transformando dados meteorológicos e de nutrientes em decisões inteligentes que protegem o ecossistema.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- SUSTAINABILITY -->
+<section id="sustentabilidade">
+    <div class="wrap">
+        <div class="about-grid">
+            <div class="about-text reveal left">
+                <h2>Compromisso Sustentável</h2>
+                <p>Para manter o agro forte, precisamos de solo vivo e água limpa. A agricultura moderna foca em práticas regenerativas que protegem e recuperam a biodiversidade local enquanto alimentam o mundo.</p>
+                <ul class="checklist">
+                    <li>
+                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Preservação e Recuperação de Nascentes
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Uso de Fontes de Energia 100% Renováveis
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Manejo Integrado de Pragas Bioecológicas
+                    </li>
                 </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section id="inicio">
-        <div class="hero-bg"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <span class="badge">Agro Forte, Futuro Sustentável</span>
-            <h1>A Nova Era do Campo</h1>
-            <p>Onde a inteligência artificial encontra a terra para criar um ciclo de abundância, alta produtividade e respeito à natureza.</p>
-            <div class="hero-btns">
-                <a href="#tecnologia" class="btn btn-primary">Explorar Tecnologias</a>
-                <a href="#sustentabilidade" class="btn btn-outline">Nossa Missão</a>
+            </div>
+            <div class="img-wrap reveal right">
+                <img
+                    src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80"
+                    alt="Tecnologia e Sustentabilidade no Campo"
+                    loading="lazy">
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- FEATURES -->
-    <section id="tecnologia">
-        <div class="container">
-            <h2 class="section-title reveal">Inovação Agro 4.0</h2>
-            <div class="cards-grid">
-
-                <div class="card reveal">
-                    <div class="card-icon">
-                        <!-- Satellite dish icon -->
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
-                        </svg>
-                    </div>
-                    <h3>Monitoramento via Satélite</h3>
-                    <p>Análise em tempo real da saúde do solo e das plantações, garantindo intervenções precisas e sem desperdícios.</p>
-                </div>
-
-                <div class="card reveal">
-                    <div class="card-icon">
-                        <!-- Bot / robot icon -->
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <rect width="18" height="10" x="3" y="11" rx="2"/>
-                            <circle cx="12" cy="5" r="2"/>
-                            <path d="M12 7v4"/>
-                            <line x1="8" x2="8" y1="16" y2="16"/>
-                            <line x1="16" x2="16" y1="16" y2="16"/>
-                        </svg>
-                    </div>
-                    <h3>Automação Inteligente</h3>
-                    <p>Maquinários autônomos e drones que otimizam o trabalho no campo e reduzem drasticamente as emissões de carbono.</p>
-                </div>
-
-                <div class="card reveal">
-                    <div class="card-icon">
-                        <!-- Bar chart icon -->
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <line x1="18" x2="18" y1="20" y2="10"/>
-                            <line x1="12" x2="12" y1="20" y2="4"/>
-                            <line x1="6" x2="6" y1="20" y2="14"/>
-                        </svg>
-                    </div>
-                    <h3>Big Data Rural</h3>
-                    <p>Transformando dados meteorológicos e de nutrientes em decisões inteligentes que protegem o ecossistema.</p>
-                </div>
-
-            </div>
+<!-- FUTURE -->
+<section id="futuro">
+    <div class="wrap">
+        <div class="future-box reveal scale">
+            <h2>O Futuro Começa Aqui</h2>
+            <p>Junte-se à revolução agrotech e transforme o potencial do seu negócio rural em resultados reais e sustentáveis.</p>
+            <a href="#inicio" class="btn btn-green">Fale com um Especialista</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- SUSTAINABILITY -->
-    <section id="sustentabilidade">
-        <div class="container">
-            <div class="about-grid">
+<!-- FOOTER -->
+<footer>
+    <div class="wrap">
+        <p>&copy; 2026 AgroTech — Agro Forte, Futuro Sustentável. Desenvolvido no Replit.</p>
+    </div>
+</footer>
 
-                <div class="about-text reveal from-left">
-                    <h2>Compromisso Sustentável</h2>
-                    <p>Para manter o agro forte, precisamos de solo vivo e água limpa. A agricultura moderna foca em práticas regenerativas que protegem e recuperam a biodiversidade local enquanto alimentam o mundo.</p>
-                    <ul class="check-list">
-                        <li>
-                            <!-- check-circle icon -->
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                            Preservação e Recuperação de Nascentes
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                            Uso de Fontes de Energia 100% Renováveis
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
-                            </svg>
-                            Manejo Integrado de Pragas Bioecológicas
-                        </li>
-                    </ul>
-                </div>
+<script>
+    // Scroll reveal — Intersection Observer nativo, zero bibliotecas
+    const io = new IntersectionObserver(
+        (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }),
+        { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 
-                <div class="about-img-wrap reveal from-right">
-                    <img
-                        src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=600&q=80"
-                        alt="Tecnologia e Sustentabilidade no Campo"
-                        loading="lazy"
-                    >
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- FUTURE -->
-    <section id="futuro">
-        <div class="container">
-            <div class="future-card reveal scale-in">
-                <h2>O Futuro Começa Aqui</h2>
-                <p>Junte-se à revolução agrotech e transforme o potencial do seu negócio rural em resultados reais e sustentáveis.</p>
-                <a href="#inicio" class="btn btn-primary">Fale com um Especialista</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 AgroTech — Agro Forte, Futuro Sustentável. Desenvolvido no Replit.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Scroll reveal using native Intersection Observer — zero libraries
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
-        );
-
-        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    </script>
-
-</body>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="84d5152c-e04a-4b39-8d00-db016f83c9f5"></script></body>
 </html>
